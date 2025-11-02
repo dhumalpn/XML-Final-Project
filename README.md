@@ -68,7 +68,7 @@ The following describes the intended user flow and screen layout-
 
 Work will be planned and tracked using GitHub Projects within the project repository.
 
-Link - https://github.com/dhumalpn/XML-Final-Project.git
+Link - https://github.com/dhumalpn/7024-Inventory-Management-Web-App
 
 
 ## V. User Requirements
