@@ -155,12 +155,12 @@ As a user, I want to filter my inventory list by place so that I can easily see 
 ## VII. Team Composition
 
    ### Team Members
-      (Responsibilities of each member to be determined in the next meeting)
-      * Harshitha Baratam
-      * Narayan Shanku
-      * Pooja Dhumal
-      * Rohan Barai
+   (Responsibilities of each member to be determined in the next meeting)
+   * Harshitha Baratam
+   * Narayan Shanku
+   * Pooja Dhumal
+   * Rohan Barai
 
    ### Weekly Team Meeting
 
-      Every Thursday, 8:00 PM - 09:00 PM at Lindner College of Business
+   Every Thursday, 8:00 PM - 09:00 PM at Lindner College of Business
