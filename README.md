@@ -75,7 +75,7 @@ Link - https://github.com/dhumalpn/XML-Final-Project.git
 
 ### Requirement 1: Adding a Product
 
-* As a user, I want to add a new product to my inventory so that I can track its quantity, location, and expiry.
+As a user, I want to add a new product to my inventory so that I can track its quantity, location, and expiry.
 * **Example 1.1 (Adding via API lookup):**
     * Given I am on the "Add Item" screen.
     * When I search for "Chobani Greek Yogurt Vanilla" and select the correct item from the results.
@@ -91,7 +91,7 @@ Link - https://github.com/dhumalpn/XML-Final-Project.git
 
 ### Requirement 2: Viewing Product Scores
 
-* As a user, I want to see the Health Score and Green Score for my products so that I can make informed decisions about my items.
+As a user, I want to see the Health Score and Green Score for my products so that I can make informed decisions about my items.
 * **Example 2.1 (Viewing scores on details page):**
     * Given I have "Chobani Greek Yogurt" in my inventory.
     * When I tap on that item from the "Inventory List" to open the "Edit Item" screen.
@@ -99,7 +99,7 @@ Link - https://github.com/dhumalpn/XML-Final-Project.git
 
 ### Requirement 3: Managing Inventory
 
-* As a user, I want to update the quantity and expiry date of an item so that my inventory remains accurate.
+As a user, I want to update the quantity and expiry date of an item so that my inventory remains accurate.
 * **Example 3.1 (Updating quantity):**
     * Given I am viewing the "Item Details" for "Milk," which has a current quantity of "1".
     * When I change the quantity input field to "0" (because I finished it) and press "Save".
@@ -111,7 +111,7 @@ Link - https://github.com/dhumalpn/XML-Final-Project.git
 
 ### Requirement 4: Organizing Inventory
 
-* As a user, I want to filter my inventory list by place so that I can easily see what I have in a specific location (e.g., "Pantry").
+As a user, I want to filter my inventory list by place so that I can easily see what I have in a specific location (e.g., "Pantry").
 * **Example 4.1 (Filtering by place):**
     * Given I have "Cereal" saved to "Pantry" and "Shampoo" saved to "Restroom".
     * When I navigate to the Dashboard and tap on the "Pantry" location.
@@ -153,7 +153,7 @@ Link - https://github.com/dhumalpn/XML-Final-Project.git
 
 
 ## VII. Team Members
-
+(Responsibilities of each member to be determined in the next meeting)
 * Harshitha Baratam
 * Narayan Shanku
 * Pooja Dhumal
