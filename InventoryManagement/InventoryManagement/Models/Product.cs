@@ -10,6 +10,9 @@
         public string? Category { get; set; }
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
+        public string? NutriScore { get; set; } 
+        public int? EcoScore { get; set; } 
+
         public ICollection<Inventory>? Inventories { get; set; }
     }
 }
