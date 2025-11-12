@@ -1,0 +1,67 @@
+﻿@page
+@model InventoryManagement.Pages.InventoryModel
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+<div class="container py-4">
+    <h1 class="mb-3">Inventory</h1>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="get" class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label">Search product</label>
+                    <input name="search" value="@Model.Search" class="form-control" placeholder="e.g., Yogurt, Milk" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Place</label>
+                    <select name="place" class="form-select">
+                        <option value="">All Places</option>
+                        <option value="Pantry" selected="@(Model.Place == "Pantry")">Pantry</option>
+                        <option value="Restroom" selected="@(Model.Place == "Restroom")">Restroom</option>
+                        <option value="Office" selected="@(Model.Place == "Office")">Office</option>
+                        <option value="Freezer" selected="@(Model.Place == "Freezer")">Freezer</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Items</h5>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Place</th>
+                            <th>Quantity</th>
+                            <th>Expiry</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.Place</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.ExpiryDate?.ToString("MM/dd/yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (!Model.Items.Any())
+            {
+                <p class="text-muted mt-3">No items found.</p>
+            }
+        </div>
+    </div>
+</div>
