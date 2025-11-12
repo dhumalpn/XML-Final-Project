@@ -7,6 +7,7 @@
 <div class="container py-4">
     <h1 class="mb-3">Inventory</h1>
 
+    <!-- ✅ FILTER CARD -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <form method="get" class="row g-2 align-items-end">
@@ -31,6 +32,48 @@
         </div>
     </div>
 
+    <!-- ✅ UPC LOOKUP CARD -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Add product by barcode</h5>
+
+            <div class="row g-2 align-items-end">
+                <div class="col-md-4">
+                    <label for="upcInput" class="form-label">Barcode / UPC</label>
+                    <input id="upcInput" class="form-control" placeholder="e.g., 3017620422003" />
+                </div>
+
+                <div class="col-md-2">
+                    <button id="lookupBtn" class="btn btn-primary w-100" type="button">Lookup</button>
+                </div>
+
+                <div class="col-md-6">
+                    <div id="lookupStatus" class="small text-muted"></div>
+                </div>
+            </div>
+
+            <div class="row mt-3 g-2">
+                <div class="col-md-4">
+                    <label class="form-label">Product Name</label>
+                    <input id="autoTitle" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Brand</label>
+                    <input id="autoBrand" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Category</label>
+                    <input id="autoCategory" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">NutriScore</label>
+                    <input id="autoNutri" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ ITEMS TABLE CARD -->
     <div class="card shadow-sm">
         <div class="card-body">
             <h5 class="card-title mb-3">Items</h5>
@@ -65,3 +108,60 @@
         </div>
     </div>
 </div>
+
+<!-- ✅ Inline JavaScript after HTML -->
+<script>
+    (function () {
+      const upcInput = document.getElementById('upcInput');
+      const lookupBtn = document.getElementById('lookupBtn');
+      const statusEl = document.getElementById('lookupStatus');
+
+      if (!lookupBtn) {
+        console.error('lookupBtn not found on page');
+        return;
+      }
+
+      lookupBtn.addEventListener('click', async () => {
+        const upc = upcInput.value?.trim();
+        if (!upc) { alert('Enter a barcode/UPC'); upcInput.focus(); return; }
+
+        statusEl.textContent = 'Looking up...';
+        lookupBtn.disabled = true;
+
+        try {
+          const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
+          const token = tokenEl ? tokenEl.value : null;
+
+          const resp = await fetch(window.location.pathname + '?handler=LookupUpc', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { 'RequestVerificationToken': token } : {})
+            },
+            body: JSON.stringify({ upc })
+          });
+
+          if (!resp.ok) {
+            statusEl.textContent = 'Lookup failed: ' + resp.statusText;
+            return;
+          }
+
+          const data = await resp.json();
+          if (data.found) {
+            document.getElementById('autoTitle').value = data.title || '';
+            document.getElementById('autoBrand').value = data.brand || '';
+            document.getElementById('autoCategory').value = data.category || '';
+            document.getElementById('autoNutri').value = data.nutriScore || '';
+            statusEl.textContent = '✅ Product found and populated.';
+          } else {
+            statusEl.textContent = data.message || '❌ Product not found.';
+          }
+        } catch (err) {
+          console.error(err);
+          statusEl.textContent = '⚠️ Lookup error. See console.';
+        } finally {
+          lookupBtn.disabled = false;
+        }
+      });
+    })();
+</script>
