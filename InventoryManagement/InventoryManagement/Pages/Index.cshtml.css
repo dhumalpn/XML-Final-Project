@@ -1,0 +1,121 @@
+/* ✅ Background hero using Unsplash image + warm overlay */
+.background-hero {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-image: url('https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1600&q=80');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+/* Overlay for readability */
+.background-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 253, 249, 0.85) 0%, rgba(255, 239, 232, 0.65) 35%, rgba(255, 239, 232, 0.6) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.background-hero .shape {
+    position: absolute;
+    will-change: transform, opacity;
+    opacity: 0.12;
+    filter: blur(28px);
+    transform-origin: center;
+}
+
+.background-hero .shape.shape-left {
+    left: -12%;
+    top: -10%;
+    width: 680px;
+    height: 680px;
+}
+
+.background-hero .shape.shape-right {
+    right: -6%;
+    bottom: -10%;
+    width: 520px;
+    height: 520px;
+}
+
+/* ensure main content above background */
+.container.home-outer {
+    position: relative;
+    z-index: 3;
+}
+
+.home-hero-spacer {
+    min-height: 46vh;
+}
+
+/* ----------------- Card Styling ----------------- */
+.home-card {
+    background: var(--card-bg);
+    background-color: var(--card-bg-fallback);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(46, 41, 38, 0.06);
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.6rem;
+    border: 1px solid rgba(48, 38, 30, 0.04);
+    backdrop-filter: blur(4px);
+}
+
+.home-card .form-control {
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(48, 38, 30, 0.08);
+    box-shadow: none;
+    height: 56px;
+}
+
+
+/* ----------------- Buttons ----------------- */
+.btn-lookup {
+    background-color: var(--sunset-primary);
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.55rem 1.05rem;
+    font-weight: 600;
+    border: none;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 12px rgba(224, 122, 95, 0.12);
+}
+
+.btn-lookup:hover,
+.btn-lookup:focus {
+    background-color: #cf6a4f;
+    outline: none;
+    box-shadow: 0 8px 20px rgba(224, 122, 95, 0.14);
+}
+
+/* ----------------- Typography ----------------- */
+.page-title {
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin: 1.2rem 0 1rem 0;
+    color: var(--text-primary);
+}
+
+.title-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.title-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient( 180deg, rgba(224, 122, 95, 0.06), rgba(242, 204, 143, 0.04) );
+    box-shadow: 0 2px 8px rgba(46, 41, 38, 0.04);
+}
