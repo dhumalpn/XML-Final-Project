@@ -9,7 +9,6 @@ using InventoryManagement.Services;
 
 namespace InventoryManagement.Pages
 {
-    [IgnoreAntiforgeryToken]
     public class InventoryModel : PageModel
     {
         private readonly OpenFoodFactsService _off;
