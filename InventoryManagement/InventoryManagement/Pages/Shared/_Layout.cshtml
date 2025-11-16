@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-earth mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-earth fixed-top shadow-sm">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
                     <img src="~/img/Logo.png" alt="Logo" style="height:28px; margin-right:8px;" asp-append-version="true" />
@@ -21,6 +21,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -37,6 +38,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
