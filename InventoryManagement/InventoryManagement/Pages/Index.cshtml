@@ -1,10 +1,8 @@
 ﻿@page
-@model IndexModel
+@model InventoryManagement.Pages.IndexModel
 @{
     ViewData["Title"] = "House Buddy";
 }
-
-
 
 <div class="background-hero" aria-hidden="true">
     <div class="shape shape-left" aria-hidden="true">
@@ -36,162 +34,115 @@
     </div>
 </div>
 
-<div class="container home-outer mt-4">
+<div class="container home-outer mt-4 page-content">
 
-    <div class="home-hero-spacer"></div>
+    @* <div class="home-hero-spacer"></div> *@
 
     <div class="home-card mb-3">
         <div class="mb-3">
             <h1 class="page-title mb-0">Manage Items</h1>
         </div>
 
-
         <div class="home-card-body">
             <label for="upcInput" class="form-label">Search by UPC</label>
-            <form class="mb-0" role="search" aria-label="Search by UPC" onsubmit="return false;">
+
+            <!-- SERVER-SIDE SEARCH FORM -->
+            <form class="mb-0" role="search" aria-label="Search by UPC"
+                  method="post" asp-page-handler="Search">
                 <div class="home-search-row">
-                    <input id="upcInput" name="upc" class="form-control"
-                           placeholder="e.g., 012345678905" aria-label="UPC code" />
-                    <button id="btnSearch" class="btn btn-lookup" type="button">Lookup</button>
+                    <input id="upcInput"
+                           name="UPC"
+                           class="form-control"
+                           value="@Model.UPC"
+                           placeholder="e.g., 012345678905"
+                           aria-label="UPC code" />
+                    <button class="btn btn-lookup" type="submit">Lookup</button>
                 </div>
             </form>
 
-            <div id="searchResult" class="mt-3" style="display:none;">
-                <div class="row g-3 align-items-start">
-                    <div class="col-auto">
-                        <img id="srImage"
-                             src="https://media.istockphoto.com/id/1457433817/photo/group-of-healthy-food-for-flexitarian-diet.jpg?s=1024x1024&w=is&k=20&c=iBBM7YTn5Rf-QhCd0kkvFaDNLV6Rb02iMQlS39LSSTI="
-                             alt="Product image"
-                             style="max-width:120px; border-radius:8px; background:#f3f3f3; padding:4px;" />
-                    </div>
+            <!-- Validation / Error messages -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-warning mt-3" id="searchError">
+                    @foreach (var e in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        @e.ErrorMessage
+                
+                        <br />
+                    }
+                </div>
+            }
 
-                    <div class="col">
-                        <h5 id="srTitle" class="mb-2"></h5>
-                        <div><span class="field-label">Brand:</span> <span id="srBrand"></span></div>
-                        <div><span class="field-label">Model:</span> <span id="srModel"></span></div>
-                        <div><span class="field-label">Category:</span> <span id="srCategoryText"></span></div>
-                        <div><span class="field-label">UPC:</span> <span id="srUpc"></span></div>
+            <!-- SEARCH RESULT (ONLY IF API RETURNED AN ITEM) -->
+            @if (Model.SearchedItem is not null)
+            {
+                var item = Model.SearchedItem;
 
-                        <hr class="mt-3 mb-3" />
-
-                        <div class="row g-3">
-                            <div class="col-6 col-md-3">
-                                <label for="srQty" class="field-label mb-1">Quantity</label>
-                                <input id="srQty" type="number" min="1" value="1"
-                                       class="form-control" />
-                            </div>
-
-                            <div class="col-6 col-md-3">
-                                <label for="srExpiry" class="field-label mb-1">Expiry Date</label>
-                                <input id="srExpiry" type="date" class="form-control" />
-                            </div>
-
-                            <div class="col-12 col-md-4">
-                                <label for="srCategorySelect" class="field-label mb-1">Category</label>
-                                <select id="srCategorySelect" class="form-select">
-                                    <option value="">Select category</option>
-                                    <option value="Pantry">Pantry</option>
-                                    <option value="Fridge">Fridge</option>
-                                    <option value="Freezer">Freezer</option>
-                                    <option value="Bathroom">Bathroom</option>
-                                    <option value="Cleaning">Cleaning</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <label for="srLocation" class="field-label mb-1">Location (optional)</label>
-                                <input id="srLocation" class="form-control"
-                                       placeholder="e.g., Kitchen cabinet, Top shelf" />
-                            </div>
+                <div id="searchResult" class="mt-3">
+                    <div class="row g-3 align-items-start">
+                        <div class="col-auto">
+                            @if (item.Images != null && item.Images.Count > 0)
+                            {
+                                <img id="srImage"
+                                     src="@item.Images[0]"
+                                     alt="Product image"
+                                     style="max-width:120px; border-radius:8px; background:#f3f3f3; padding:4px;" />
+                            }
                         </div>
 
-                        <div class="mt-3 d-flex flex-wrap gap-2">
-                            <button id="btnAdd" class="btn btn-success" type="button">Add to Inventory</button>
-                        </div>
+                        <div class="col">
+                            <h5 id="srTitle" class="mb-2">@item.Title</h5>
+                            <div><span class="field-label">Brand:</span> <span id="srBrand">@item.Brand</span></div>
+                            <div><span class="field-label">Model:</span> <span id="srModel">@item.Model</span></div>
+                            <div><span class="field-label">Category:</span> <span id="srCategoryText">@item.Category</span></div>
+                            <div><span class="field-label">UPC:</span> <span id="srUpc">@item.Upc</span></div>
 
-                        <div id="srMsg" class="text-success mt-2"
-                             style="display:none;">
-                            Added to inventory (demo only, no database yet).
+                            <hr class="mt-3 mb-3" />
+
+                            <div class="row g-3">
+                                <div class="col-6 col-md-3">
+                                    <label for="srQty" class="field-label mb-1">Quantity</label>
+                                    <input id="srQty" type="number" min="1" value="1"
+                                           class="form-control" />
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <label for="srExpiry" class="field-label mb-1">Expiry Date</label>
+                                    <input id="srExpiry" type="date" class="form-control" />
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="srCategorySelect" class="field-label mb-1">Category</label>
+                                    <select id="srCategorySelect" class="form-select">
+                                        <option value="">Select category</option>
+                                        <option value="Pantry">Pantry</option>
+                                        <option value="Fridge">Fridge</option>
+                                        <option value="Freezer">Freezer</option>
+                                        <option value="Bathroom">Bathroom</option>
+                                        <option value="Cleaning">Cleaning</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label for="srLocation" class="field-label mb-1">Location (optional)</label>
+                                    <input id="srLocation" class="form-control"
+                                           placeholder="e.g., Kitchen cabinet, Top shelf" />
+                                </div>
+                            </div>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <!-- For now this is just UI; we'll wire this to a POST handler later -->
+                                <button id="btnAdd" class="btn btn-success" type="button" disabled>
+                                    Add to Inventory
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div id="searchError" class="alert alert-warning mt-3" style="display:none;"></div>
+            }
         </div>
     </div>
 
 </div>
 
-@section Scripts {
-    <script>
-        const upcInput = document.getElementById('upcInput');
-        const btnSearch = document.getElementById('btnSearch');
-        const btnAdd = document.getElementById('btnAdd');
-        const searchError = document.getElementById('searchError');
-        const searchResult = document.getElementById('searchResult');
-
-        const srImage = document.getElementById('srImage');
-        const srTitle = document.getElementById('srTitle');
-        const srBrand = document.getElementById('srBrand');
-        const srModel = document.getElementById('srModel');
-        const srCategoryText = document.getElementById('srCategoryText');
-        const srUpc = document.getElementById('srUpc');
-
-        const srQty = document.getElementById('srQty');
-        const srExpiry = document.getElementById('srExpiry');
-        const srCategorySelect = document.getElementById('srCategorySelect');
-        const srLocation = document.getElementById('srLocation');
-        const srMsg = document.getElementById('srMsg');
-
-        btnSearch.addEventListener('click', function () {
-            const upc = upcInput.value.trim();
-            searchError.style.display = 'none';
-            searchResult.style.display = 'none';
-            srMsg.style.display = 'none';
-
-            if (!upc) {
-                searchError.textContent = 'Please enter a UPC to search.';
-                searchError.style.display = 'block';
-                return;
-            }
-
-            srTitle.textContent = 'Sample Pantry Item';
-            srBrand.textContent = 'Demo Brand';
-            srModel.textContent = 'Model X';
-            srCategoryText.textContent = 'Pantry';
-            srUpc.textContent = upc;
-
-            // keep your static image src from the markup
-            srImage.style.display = 'block';
-
-            srQty.value = 1;
-            srExpiry.value = '';
-            srCategorySelect.value = '';
-            srLocation.value = '';
-
-            searchResult.style.display = 'block';
-        });
-
-        btnAdd.addEventListener('click', function () {
-            const data = {
-                upc: srUpc.textContent,
-                title: srTitle.textContent,
-                qty: srQty.value,
-                expiry: srExpiry.value,
-                category: srCategorySelect.value || srCategoryText.textContent,
-                location: srLocation.value
-            };
-
-            console.log('Inventory item (demo only):', data);
-
-            srMsg.textContent = 'Added to inventory (demo only, no database yet).';
-            srMsg.style.display = 'block';
-
-            setTimeout(() => {
-                srMsg.style.display = 'none';
-            }, 2500);
-        });
-    </script>
-}
