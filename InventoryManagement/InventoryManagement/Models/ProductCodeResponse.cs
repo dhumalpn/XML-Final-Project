@@ -48,8 +48,7 @@ namespace InventoryManagement.Models
         public string Brand { get; set; }
 
         [JsonProperty("model")]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long Model { get; set; }
+        public string Model { get; set; }
 
         [JsonProperty("color")]
         public string Color { get; set; }
