@@ -1,4 +1,5 @@
 ﻿@page
+@Html.AntiForgeryToken()
 @model InventoryManagement.Pages.InventoryModel
 @{
     ViewData["Title"] = "Inventory";
@@ -239,10 +240,17 @@
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              ...(token ? { 'RequestVerificationToken': token } : {})
+              'RequestVerificationToken': token
             },
             body: JSON.stringify({ upc })
           });
+          
+          /* Error handling if token is missing */
+          if (!token) {
+               console.error('CSRF token not found.');
+               statusEl.textContent = 'Security token missing. Unable to continue - please refresh & try again.';
+               return;
+          }
 
           if (!resp.ok) {
             statusEl.textContent = 'Lookup failed: ' + resp.statusText;

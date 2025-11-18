@@ -8,18 +8,19 @@ namespace InventoryManagement.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+          private readonly ILogger<IndexModel> _logger;
+          private readonly InventoryManagementContext _db;
+		private readonly IHttpClientFactory _httpClientFactory;
 
-
-        private readonly InventoryManagementContext _db;
-
-        private static readonly HttpClient client = new HttpClient();
-
-        public IndexModel(ILogger<IndexModel> logger, InventoryManagementContext db)
+		public IndexModel(
+          ILogger<IndexModel> logger,
+          InventoryManagementContext db,
+		IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _db = db;
-        }
+            _httpClientFactory = httpClientFactory;
+		}
 
         // Search input from UPC textbox
         [BindProperty]
@@ -56,6 +57,7 @@ namespace InventoryManagement.Pages
             }
 
             var url = $"https://api.upcitemdb.com/prod/trial/lookup?upc={UPC}";
+            var client = _httpClientFactory.CreateClient();
 
             HttpResponseMessage response;
             try
@@ -133,41 +135,50 @@ namespace InventoryManagement.Pages
 
             var existing = await _db.Product.FirstOrDefaultAsync(p => p.UPC == upc);
 
-            if (existing == null)
-            {
-                var product = new Product
-                {
-                    UPC = upc,
-                    Title = title,
-                    Brand = brand,
-                    Model = model,
-                    Category = category,
-                    ImageUrl = imageUrl,
-                    Quantity = quantity,
-                    ExpiryDate = expiryDate,
-                    StorageLocation = storageLocation
-                };
+               if (existing == null)
+               {
+                    try
+                    {
+                         var product = new Product
+                         {
+                              UPC = upc,
+                              Title = title,
+                              Brand = brand,
+                              Model = model,
+                              Category = category,
+                              ImageUrl = imageUrl,
+                              Quantity = quantity,
+                              ExpiryDate = expiryDate,
+                              StorageLocation = storageLocation
+                         };
+                         _db.Product.Add(product);
+                         await _db.SaveChangesAsync(); // Enforces unique constraint on UPC
+				}
+				catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("IX_Product_UPC") == true)
+				{
+					// Handle race condition (duplicate UPC inserted between check and save)
+					ModelState.AddModelError(string.Empty, "This UPC already exists in inventory.");
+					return Page();
+				}
+               }
+               else
+               {
+                    existing.Title = title;
+                    existing.Brand = brand;
+                    existing.Model = model;
+                    existing.Category = category;
 
-                _db.Product.Add(product);
-            }
-            else
-            {
-                existing.Title = title;
-                existing.Brand = brand;
-                existing.Model = model;
-                existing.Category = category;
+				if (!string.IsNullOrWhiteSpace(imageUrl))
+                         existing.ImageUrl = imageUrl;
 
-                if (!string.IsNullOrWhiteSpace(imageUrl))
-                    existing.ImageUrl = imageUrl;
+                    existing.Quantity += quantity;
 
-                existing.Quantity += quantity;
+                    if (expiryDate.HasValue)
+                         existing.ExpiryDate = expiryDate;
 
-                if (expiryDate.HasValue)
-                    existing.ExpiryDate = expiryDate;
-
-                if (!string.IsNullOrWhiteSpace(storageLocation))
-                    existing.StorageLocation = storageLocation;
-            }
+                    if (!string.IsNullOrWhiteSpace(storageLocation))
+                         existing.StorageLocation = storageLocation;
+               }
 
             await _db.SaveChangesAsync();
 
