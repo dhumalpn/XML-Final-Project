@@ -80,6 +80,13 @@
             </h2>
             <div id="collapseScore" class="accordion-collapse collapse" aria-labelledby="headingScore" data-bs-parent="#scoreAccordion">
                 <div class="accordion-body">
+                    
+                    <div class="row mb-3">
+                        <div class="col-12 text-center">
+                            <p class="h5 text-dark">Product: <strong>(Searched Product Name Placeholder)</strong></p>
+                        </div>
+                    </div>
+                    
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="card bg-light border-success h-100">
@@ -106,37 +113,102 @@
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title mb-3">Items</h5>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Place</th>
-                            <th>Quantity</th>
-                            <th>Expiry</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Items)
-                        {
-                            <tr>
-                                <td>@item.ProductName</td>
-                                <td>@item.Place</td>
-                                <td>@item.Quantity</td>
-                                <td>@item.ExpiryDate?.ToString("MM/dd/yyyy")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="accordion mb-4" id="locationAccordionWrapper">
+        <div class="accordion-item shadow-sm">
+            <h2 class="accordion-header" id="headingLocations">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLocations" aria-expanded="true" aria-controls="collapseLocations">
+                    <b>Items by Location</b>
+                </button>
+            </h2>
+            <div id="collapseLocations" class="accordion-collapse collapse show" aria-labelledby="headingLocations" data-bs-parent="#locationAccordionWrapper">
+                <div class="accordion-body">
+                    <div class="row g-3">
 
-            @if (!Model.Items.Any())
-            {
-                <p class="text-muted mt-3">No items found.</p>
-            }
+                        <div class="col-md-6">
+                            <div class="card border-primary h-100">
+                                <div class="card-header bg-primary text-white">Pantry</div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Coffee Beans 
+                                            <span class="badge bg-secondary rounded-pill">Qty: 4</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Sugar Packets 
+                                            <span class="badge bg-secondary rounded-pill">Qty: 100</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card border-secondary h-100">
+                                <div class="card-header bg-secondary text-white">Office</div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Printer Paper 
+                                            <span class="badge bg-secondary rounded-pill">Qty: 250</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Stapler Refill 
+                                            <span class="badge bg-secondary rounded-pill">Qty: 1</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion mb-4" id="inventoryAccordion">
+        <div class="accordion-item shadow-sm">
+            <h2 class="accordion-header" id="headingInventory">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventory" aria-expanded="true" aria-controls="collapseInventory">
+                    <b>Inventory List</b>
+                </button>
+            </h2>
+            <div id="collapseInventory" class="accordion-collapse collapse show" aria-labelledby="headingInventory" data-bs-parent="#inventoryAccordion">
+                <div class="accordion-body p-0">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Place</th>
+                                            <th>Quantity</th>
+                                            <th>Expiry</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <tr>
+                                                <td>@item.ProductName</td>
+                                                <td>@item.Place</td>
+                                                <td>@item.Quantity</td>
+                                                <td>@item.ExpiryDate?.ToString("MM/dd/yyyy")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            @if (!Model.Items.Any())
+                            {
+                                <p class="text-muted mt-3">No items found.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
