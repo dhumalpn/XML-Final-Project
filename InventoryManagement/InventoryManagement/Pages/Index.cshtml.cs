@@ -1,5 +1,6 @@
 using InventoryManagement.Data;
 using InventoryManagement.Models;
+using InventoryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +13,13 @@ namespace InventoryManagement.Pages
 
 
         private readonly InventoryManagementContext _db;
+        private readonly IUpcLookupService _upcService;
 
-        private static readonly HttpClient client = new HttpClient();
-
-        public IndexModel(ILogger<IndexModel> logger, InventoryManagementContext db)
+        public IndexModel(ILogger<IndexModel> logger, InventoryManagementContext db, IUpcLookupService upcService)
         {
             _logger = logger;
             _db = db;
+            _upcService = upcService;
         }
 
         // Search input from UPC textbox
@@ -55,57 +56,15 @@ namespace InventoryManagement.Pages
                 return Page();
             }
 
-            var url = $"https://api.upcitemdb.com/prod/trial/lookup?upc={UPC}";
+            var item = await _upcService.LookupUpcAsync(UPC);
 
-            HttpResponseMessage response;
-            try
+            if (item == null)
             {
-                response = await client.GetAsync(url);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error calling UPCItemDB");
-                ModelState.AddModelError(string.Empty, "Failed to reach UPCItemDB.");
+                ModelState.AddModelError(string.Empty, "No product found for this UPC or API error.");
                 return Page();
             }
 
-            if (!response.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError(string.Empty, $"UPCItemDB returned an error: {response.StatusCode}");
-                return Page();
-            }
-
-            string json;
-            try
-            {
-                json = await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error reading UPCItemDB response");
-                ModelState.AddModelError(string.Empty, "Failed to read response.");
-                return Page();
-            }
-
-            ProductCodeResponse? parsed;
-            try
-            {
-                parsed = ProductCodeResponse.FromJson(json);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error parsing UPCItemDB response");
-                ModelState.AddModelError(string.Empty, "Response format was unexpected.");
-                return Page();
-            }
-
-            if (parsed == null || parsed.Total == 0 || parsed.Items == null || parsed.Items.Count == 0)
-            {
-                ModelState.AddModelError(string.Empty, "No product found for this UPC.");
-                return Page();
-            }
-
-            SearchedItem = parsed.Items[0];
+            SearchedItem = item;
             return Page();
         }
 

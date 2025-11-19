@@ -19,6 +19,12 @@ builder.Services.AddHttpClient<OpenFoodFactsService>(client =>
     client.Timeout = TimeSpan.FromSeconds(10);
 });
 
+// Register UpcLookupService
+builder.Services.AddHttpClient<IUpcLookupService, UpcLookupService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
