@@ -1,4 +1,4 @@
-using InventoryManagement.Data;
+﻿using InventoryManagement.Data;
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -27,6 +27,7 @@ namespace InventoryManagement.Pages
 
         public Item? SearchedItem { get; set; }
         public string ? SearchedNutriScoreGrade { get; set; }
+        public string? SearchedEcoScoreGrade { get; set; }
 
         public List<Product> Products { get; set; } = new();
 
@@ -77,7 +78,8 @@ namespace InventoryManagement.Pages
                         var offJson = await offResponse.Content.ReadAsStringAsync();
                         var obj = FoodFactsResponse.FromJson(offJson);
                         // Extract product.nutriscore_grade if present
-                        SearchedNutriScoreGrade = obj.Product.NutriscoreGrade;
+                        SearchedNutriScoreGrade = obj?.Product?.NutriscoreGrade;
+                        SearchedEcoScoreGrade = obj?.Product?.EcoscoreGrade;
                     }
                 }
                 catch (Exception exOff)
@@ -142,7 +144,9 @@ namespace InventoryManagement.Pages
             string? imageUrl,
             int quantity,
             DateTime? expiryDate,
-            string? storageLocation)
+            string? storageLocation,
+            string? nutriScoreGrade,
+            string? ecoScoreGrade)
         {
             await LoadProductsAsync();
 
@@ -169,7 +173,9 @@ namespace InventoryManagement.Pages
                     ImageUrl = imageUrl,
                     Quantity = quantity,
                     ExpiryDate = expiryDate,
-                    StorageLocation = storageLocation
+                    StorageLocation = storageLocation,
+                    NutriScoreGrade = nutriScoreGrade,
+                    EcoScoreGrade = ecoScoreGrade
                 };
 
                 _db.Product.Add(product);
@@ -191,6 +197,9 @@ namespace InventoryManagement.Pages
 
                 if (!string.IsNullOrWhiteSpace(storageLocation))
                     existing.StorageLocation = storageLocation;
+
+                if (!string.IsNullOrWhiteSpace(ecoScoreGrade))
+                    existing.EcoScoreGrade = ecoScoreGrade;
             }
 
             await _db.SaveChangesAsync();

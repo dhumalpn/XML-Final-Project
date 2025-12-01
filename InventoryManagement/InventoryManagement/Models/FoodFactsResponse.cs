@@ -21,6 +21,8 @@
     {
         [JsonProperty("nutriscore_grade")]
         public string NutriscoreGrade { get; set; }
+        [JsonProperty("ecoscore_grade")]
+        public string EcoscoreGrade { get; set; }
     }
 
     public partial class FoodFactsResponse

@@ -323,6 +323,78 @@ body {
     font-size: 0.75rem;
 }
 
+.nutri-pill {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    color: #fff;
+}
+
+.nutri-A {
+    background-color: #009E60;
+}
+/* Green */
+.nutri-B {
+    background-color: #85C440;
+}
+
+.nutri-C {
+    background-color: #F2C94C;
+    color: #333;
+}
+
+.nutri-D {
+    background-color: #E68A2E;
+}
+
+.nutri-E {
+    background-color: #D9534F;
+}
+
+.nutri-UNKNOWN {
+    background-color: #E07A5F;
+}
+
+.eco-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: none;
+    white-space: nowrap;
+}
+
+.eco-A {
+    background-color: #d7f4ea;
+    color: #00695c;
+}
+
+.eco-B {
+    background-color: #e4f5df;
+    color: #2e7d32;
+}
+
+.eco-C {
+    background-color: #f8f5dc;
+    color: #7b6f1b;
+}
+
+.eco-D {
+    background-color: #fbe6d6;
+    color: #bf5f1f;
+}
+
+.eco-E {
+    background-color: #fbe0e3;
+    color: #b71c1c;
+}
+
 /* ----------------- Mobile Responsive ----------------- */
 @media (max-width: 575.98px) {
     .home-card .form-control {

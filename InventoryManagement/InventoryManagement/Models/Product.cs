@@ -14,5 +14,7 @@ namespace InventoryManagement.Models
         public int Quantity { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public string? StorageLocation { get; set; }
+        public string? NutriScoreGrade { get; set; }
+        public string? EcoScoreGrade { get; set; }
     }
 }

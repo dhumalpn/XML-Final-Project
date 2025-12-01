@@ -4,6 +4,7 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20251201191155_nutriscore")]
+    partial class nutriscore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +37,6 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EcoScoreGrade")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ExpiryDate")
