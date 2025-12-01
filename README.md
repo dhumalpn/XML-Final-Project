@@ -11,7 +11,7 @@ A key feature of this application is the integration of external data sources to
 
 
 ## II. Icon/Logo
-![LOGO](InventoryManagement/InventoryManagement/wwwroot/img)
+![SafeStreet (1) (1)](https://github.com/dhumalpn/7024-Inventory-Management-Web-App/blob/main/InventoryManagement/InventoryManagement/wwwroot/img/Logo.png)
 
 
 
