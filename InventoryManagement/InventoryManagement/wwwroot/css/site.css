@@ -16,33 +16,6 @@ html {
 body {
     margin: 0;
     margin-bottom: 60px;
-    min-height: 100vh;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: #fffaf6;
-}
-
-/* Main page content spacing under navbar */
-.page-content {
-    padding-top: 5rem;
-}
-
-/* ----------------- Focus styles ----------------- */
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-/* ----------------- Navbar ----------------- */
-.navbar-earth {
-    background-color: #f4ede4;
-    border-bottom: 1px solid #d8c3a5;
-    box-shadow: none;
-}
-
-    .navbar-earth .navbar-brand {
         font-weight: 600;
         color: #4e4031;
     }
