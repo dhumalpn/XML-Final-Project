@@ -109,53 +109,54 @@
 
                             <!-- ADD FORM -->
                             <form method="post" asp-page-handler="Add">
-                                @* Hidden fields populated from the UPC API result *@
-                                <input type="hidden" name="upc" value="@item.Upc" />
-                                <input type="hidden" name="title" value="@item.Title" />
-                                <input type="hidden" name="brand" value="@item.Brand" />
-                                <input type="hidden" name="model" value="@item.Model.ToString()" />
-                                <input type="hidden" name="category" value="@item.Category" />
-                                @if (imageUrl != null)
-                                {
-                                    <input type="hidden" name="imageUrl" value="@imageUrl" />
-                                }
+                                 <div asp-validation-summary="All" class="alert alert-danger"></div>
+                                     @* Hidden fields populated from the UPC API result *@
+                                     <input type="hidden" name="upc" value="@item.Upc" />
+                                     <input type="hidden" name="title" value="@item.Title" />
+                                     <input type="hidden" name="brand" value="@item.Brand" />
+                                     <input type="hidden" name="model" value="@item.Model.ToString()" />
+                                     <input type="hidden" name="category" value="@item.Category" />
+                                     @if (imageUrl != null)
+                                     {
+                                         <input type="hidden" name="imageUrl" value="@imageUrl" />
+                                     }
 
-                                <div class="row g-3">
-                                    <div class="col-6 col-md-3">
-                                        <label class="field-label mb-1" for="addQty">Quantity</label>
-                                        <input id="addQty"
-                                               name="quantity"
-                                               type="number"
-                                               min="1"
-                                               value="1"
-                                               class="form-control" />
-                                    </div>
+                                     <div class="row g-3">
+                                         <div class="col-6 col-md-3">
+                                             <label class="field-label mb-1" for="addQty">Quantity</label>
+                                             <input id="addQty"
+                                                    name="quantity"
+                                                    type="number"
+                                                    min="1"
+                                                    value="1"
+                                                    class="form-control" />
+                                         </div>
 
-                                    <div class="col-6 col-md-3">
-                                        <label class="field-label mb-1" for="addExpiry">Expiry Date</label>
-                                        <input id="addExpiry"
-                                               name="expiryDate"
-                                               type="date"
-                                               class="form-control" />
-                                    </div>
+                                         <div class="col-6 col-md-3">
+                                             <label class="field-label mb-1" for="addExpiry">Expiry Date</label>
+                                             <input id="addExpiry"
+                                                    name="expiryDate"
+                                                    type="date"
+                                                    class="form-control" />
+                                         </div>
 
-                                    <div class="col-12 col-md-4">
-                                        <label class="field-label mb-1" for="addStorageLocation">Storage</label>
-                                        <select id="addStorageLocation"
-                                                name="storageLocation"
-                                                class="form-select">
-                                            <option value="">Select</option>
-                                            @foreach (var loc in storageLocations)
-                                            {
-                                                <option value="@loc">@loc</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
+                                         <div class="col-12 col-md-4">
+                                             <label class="field-label mb-1" for="addStorageLocation">Storage</label>
+                                             <select id="addStorageLocation"
+                                                     name="storageLocation"
+                                                     class="form-select">
+                                                 <option value="">Select</option>
+                                                 @foreach (var loc in storageLocations)
+                                                 {
+                                                     <option value="@loc">@loc</option>
+                                                 }
+                                             </select>
+                                         </div>
+                                     </div>
 
-                                <div class="mt-3 d-flex flex-wrap gap-2">
-                                    <button class="btn btn-success" type="submit">Add to Inventory</button>
-                                </div>
+                                     <div class="mt-3 d-flex flex-wrap gap-2">
+                                         <button class="btn btn-success" type="submit">Add to Inventory</button>
+                                     </div>
                             </form>
                         </div>
                     </div>
@@ -190,36 +191,36 @@
 
                     <div class="col" id="product-@p.Id">
                         <div class="card inventory-card h-100">
-                            @if (!string.IsNullOrEmpty(p.ImageUrl))
+                            @if (!string.IsNullOrEmpty(p.Product.ImageUrl))
                             {
-                                <img src="@p.ImageUrl"
+                                <img src="@p.Product.ImageUrl"
                                      class="card-img-top inventory-card-img"
-                                     alt="@p.Title" />
+                                     alt="@p.Product.Title" />
                             }
 
                             <div class="card-body d-flex flex-column inventory-card-body">
                                 <div class="mb-2">
-                                    <h5 class="card-title mb-1">@p.Title</h5>
+                                    <h5 class="card-title mb-1">@p.Product.Title</h5>
                                     <div class="small text-muted">
-                                        @if (!string.IsNullOrWhiteSpace(p.Brand))
+                                        @if (!string.IsNullOrWhiteSpace(p.Product.Brand))
                                         {
-                                            <span>@p.Brand · </span>
+                                            <span>@p.Product.Brand · </span>
                                         }
-                                        <span>UPC: @p.UPC</span>
+                                        <span>UPC: @p.Product.UPC</span>
                                     </div>
                                 </div>
 
-                                @if (!string.IsNullOrWhiteSpace(p.Category))
+                                @if (!string.IsNullOrWhiteSpace(p.Product.Category))
                                 {
-                                    var categoryDisplay = p.Category;
-                                    if (p.Category.Contains('>'))
+                                    var categoryDisplay = p.Product.Category;
+                                    if (p.Product.Category.Contains('>'))
                                     {
-                                        categoryDisplay = p.Category.Split('>').Last().Trim();
+                                        categoryDisplay = p.Product.Category.Split('>').Last().Trim();
                                     }
 
                                     <div class="mb-2">
                                         <span class="badge rounded-pill inventory-pill"
-                                              title="@p.Category">
+                                              title="@p.Product.Category">
                                             @categoryDisplay
                                         </span>
                                     </div>

@@ -1,7 +1,6 @@
-﻿using InventoryManagement.Services;
+﻿using InventoryManagement.Data;
+using InventoryManagement.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using InventoryManagement.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +12,21 @@ builder.Services.AddDbContext<InventoryManagementContext>(options =>
 // Add memory cache (used by OpenFoodFactsService)
 builder.Services.AddMemoryCache();
 
+// Add Razor Pages services
+builder.Services.AddRazorPages();
+
 // Register OpenFoodFactsService with a typed HttpClient
 builder.Services.AddHttpClient<OpenFoodFactsService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(10);
+});
+
+// Also add timeout for UPCItemDB client
+builder.Services.AddHttpClient("UPCItemDB", client =>
+{
+	client.Timeout = TimeSpan.FromSeconds(30);
+	client.BaseAddress = new Uri("https://api.upcitemdb.com/prod/trial/");
+	client.DefaultRequestHeaders.Add("User-Agent", "InventoryManagement/1.0");
 });
 
 var app = builder.Build();

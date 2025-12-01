@@ -13,7 +13,7 @@ namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementContext))]
     [Migration("20251117035600_products")]
-    partial class products
+    partial class Products
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
