@@ -236,9 +236,9 @@ As a user, I want immediate confirmation after adding an item so that I know the
 ## VII. Team Composition
 
 ### Team Members
-- Harshitha Baratam (UX/UI Designer)
+- Harshitha Baratam (UX/UI Designer/Project Manager)
 - Narayan Shanku (Azure/QA)
-- Pooja Dhumal (Project Manager)
+- Pooja Dhumal (Project Manager/UX/UI Designer)
 - Rohan Barai (API Manager)
 
 ### Weekly Team Meeting
